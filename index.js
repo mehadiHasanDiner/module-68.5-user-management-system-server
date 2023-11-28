@@ -66,8 +66,16 @@ async function run() {
     // data update
     app.put("/users/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await usersManagement.deleteOne(query);
+      const updatedInfo = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updatedUserInfo = {
+        $set: {
+          name: updatedInfo.name,
+          email: updatedInfo.email,
+          url: updatedInfo.url,
+        },
+      };
+      const result = await usersManagement.updateOne(filter, updatedUserInfo);
       res.send(result);
     });
 
